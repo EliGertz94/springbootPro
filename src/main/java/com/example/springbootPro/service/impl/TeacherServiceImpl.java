@@ -3,8 +3,10 @@ package com.example.springbootPro.service.impl;
 import com.example.springbootPro.Exceptions.CustomException;
 import com.example.springbootPro.entity.Student;
 import com.example.springbootPro.entity.Teacher;
+import com.example.springbootPro.entity.User;
 import com.example.springbootPro.repository.StudentRepository;
 import com.example.springbootPro.repository.TeacherRepository;
+import com.example.springbootPro.repository.UserRepository;
 import com.example.springbootPro.service.TeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,16 +19,23 @@ public class TeacherServiceImpl implements TeacherService {
     private TeacherRepository teacherRepository;
     @Autowired
     private StudentRepository studentRepository;
+    @Autowired
+    private UserRepository userRepository;
 
-    
+
 
 
 
     @Override
-    public Teacher addTeacher(Teacher teacher) throws CustomException {
+    public Teacher addTeacher(Teacher teacher, User user) throws CustomException {
         if(!teacherRepository.existsByName(teacher.getName())) {
 
+            // save the entity
+            User userEntity = userRepository.save(user);
+
             Teacher savedTeacher = teacherRepository.save(teacher);
+
+            savedTeacher.setUser(userEntity);
 
             return savedTeacher;
         }

@@ -2,8 +2,10 @@ package com.example.springbootPro.controller;
 
 import com.example.springbootPro.Exceptions.CustomException;
 import com.example.springbootPro.entity.DTO.StudentRequest;
+import com.example.springbootPro.entity.DTO.TeacherRequest;
 import com.example.springbootPro.entity.Student;
 import com.example.springbootPro.entity.Teacher;
+import com.example.springbootPro.entity.User;
 import com.example.springbootPro.service.TeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,12 +21,25 @@ public class TeacherController {
 
 
     @PostMapping("add-teacher")
-    public ResponseEntity<?> saveTeacher(@RequestBody Teacher teacher){
+    public ResponseEntity<?> saveTeacher(@RequestBody TeacherRequest teacher){
 
+        User userEntity = User.builder()
+                .id(0L)
+                .username(teacher.getUsername())
+                .password(teacher.getPassword())
+                .build();
+
+        Teacher teacherEntity =  Teacher.builder()
+                .id(0L)
+                .age(teacher.getAge())
+                .name(teacher.getName())
+                .subject(teacher.getSubject())
+                .user(userEntity)
+                .build();
 
 
         try{
-            return new ResponseEntity<>(teacherService.addTeacher(teacher), HttpStatus.OK);
+            return new ResponseEntity<>(teacherService.addTeacher(teacherEntity,userEntity), HttpStatus.OK);
         }catch (CustomException e){
             return new ResponseEntity<>(e.getMessage(),e.getHttpStatus());
         }

@@ -25,8 +25,9 @@ public class Teacher {
 
     private Subject subject;
 
-
-
+    @OneToOne(cascade= CascadeType.ALL)
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @JsonIgnore
     @OneToMany(mappedBy = "teacher" ,cascade = CascadeType.ALL,fetch = FetchType.LAZY)

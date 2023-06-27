@@ -9,9 +9,7 @@ public class TeacherRequest {
     private String username;
     private String password;
     private String name;
-
     private int age;
-
     private Subject subject;
 
 
